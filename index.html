@@ -25,6 +25,7 @@
       text-align: center;
       box-shadow: 0 0 25px rgba(0, 153, 255, 0.35);
       animation: float 4s ease-in-out infinite;
+      cursor: pointer;
     }
 
     @keyframes float {
@@ -95,7 +96,11 @@
   </style>
 </head>
 <body>
-  <div class="card">
+  <audio id="bgm" loop>
+    <source src="misteryoso.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="card" id="card">
     <h1 id="title">🎮 Player One Calling…</h1>
     <p id="question">Loading quest…</p>
 
@@ -121,8 +126,20 @@
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const finalMessage = document.getElementById('finalMessage');
+    const bgm = document.getElementById('bgm');
+    const card = document.getElementById('card');
+    let musicStarted = false;
 
     questionEl.textContent = questions[current];
+
+    // Start music on first tap anywhere on card
+    card.addEventListener('click', () => {
+      if (!musicStarted) {
+        bgm.volume = 0.5;
+        bgm.play().catch(() => {});
+        musicStarted = true;
+      }
+    });
 
     yesBtn.addEventListener('click', () => {
       if (current < questions.length - 1) {
